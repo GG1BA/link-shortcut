@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Link Shortcut</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <div class="main-block">
+        <h2 class="main-block-title">Hello, try this</h2>
+        <form action="POST">
+            <input class="main-block-input" placeholder="Put your link" type="text">
+        </form>
+        <button type="submit"></button>
+    </div>
+</body>
+</html>

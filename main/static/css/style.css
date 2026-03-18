@@ -1,0 +1,33 @@
+*{
+    margin: 0;
+    padding: 0;
+    text-decoration: none;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+body{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.main-block{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 50%;
+}
+
+.main-block *{
+    margin: 5px;
+}
+
+.main-block-input{
+    border: 1px solid #666666;
+    border-radius: 20px;
+    padding: 5px;
+    width: 40%;
+}
