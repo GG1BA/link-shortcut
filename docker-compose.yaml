@@ -3,68 +3,67 @@ version: '3.8'
 services:
   postgres:
     image: postgres:15-alpine
-    container_name: url-shortener-db
+    container_name: link-shortcut-db
     environment:
-      POSTGRES_DB: ${DB_NAME:-urlshortener}
-      POSTGRES_USER: ${DB_USER:-postgres}
-      POSTGRES_PASSWORD: ${DB_PASSWORD:-postgres}
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
     ports:
-      - "${DB_PORT:-5432}:5432"
+      - "${DB_PORT}:${DB_PORT}"
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-postgres} -d ${DB_NAME:-urlshortener}"]
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_NAME}"]
       interval: 5s
       timeout: 5s
       retries: 5
     networks:
-      - url-shortener-network
+      - link-shortcut-network
     restart: unless-stopped
 
   django:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: url-shortener-django
+    container_name: link-shortcut-django
     command: >
-      sh -c "python manage.py wait_for_db &&
-             python manage.py migrate &&
-             python manage.py runserver 0.0.0.0:8000"
+      sh -c "python manage.py migrate &&
+             python manage.py runserver ${RUNSERVER_URL}"
     ports:
-      - "${APP_PORT:-8000}:8000"
+      - "${APP_PORT}:${APP_PORT}"
     environment:
       DB_HOST: postgres
       DB_PORT: 5432
-      DB_NAME: ${DB_NAME:-urlshortener}
-      DB_USER: ${DB_USER:-postgres}
-      DB_PASSWORD: ${DB_PASSWORD:-postgres}
-      DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY:-django-insecure-dev-key-change-in-production}
-      DJANGO_DEBUG: ${DJANGO_DEBUG:-True}
-      DJANGO_ALLOWED_HOSTS: ${DJANGO_ALLOWED_HOSTS:-localhost,127.0.0.1}
-      BASE_URL: ${BASE_URL:-http://localhost:8000}
+      DB_NAME: ${DB_NAME}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY}
+      DJANGO_DEBUG: ${DJANGO_DEBUG}
+      DJANGO_ALLOWED_HOSTS: ${DJANGO_ALLOWED_HOSTS}
+      BASE_URL: ${BASE_URL}
     volumes:
       - ./:/app
     depends_on:
       postgres:
         condition: service_healthy
     networks:
-      - url-shortener-network
+      - link-shortcut-network
     restart: unless-stopped
 
   pgadmin:
     image: dpage/pgadmin4:latest
-    container_name: url-shortener-pgadmin
+    container_name: link-shortcut-pgadmin
     environment:
-      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_EMAIL:-admin@admin.com}
-      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD:-admin}
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD}
     ports:
-      - "${PGADMIN_PORT:-5050}:80"
+      - "${PGADMIN_PORT}:${PGADMIN_PORT}"
     volumes:
       - pgadmin_data:/var/lib/pgadmin
     depends_on:
       - postgres
     networks:
-      - url-shortener-network
+      - link-shortcut-network
     restart: unless-stopped
     profiles:
       - dev
@@ -75,5 +74,5 @@ volumes:
   pgadmin_data:
 
 networks:
-  url-shortener-network:
+  link-shortcut-network:
     driver: bridge

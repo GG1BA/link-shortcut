@@ -15,4 +15,4 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 
-RUN mkdir -p /app/url_shortener/management/commands
+RUN mkdir -p /app/link-shortcut/management/commands
