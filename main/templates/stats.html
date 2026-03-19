@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block title %}Statistics{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0">Statistics</h4>
+            </div>
+            <div class="card-body">
+                <table class="table">
+                    <tr>
+                        <th>Shortcut:</th>
+                        <td>
+                            <a href="{% url 'redirect' short_url.short_code %}" target="_blank">
+                                {{ request.get_host }}/{{ short_url.short_code }}
+                            </a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Original link:</th>
+                        <td><a href="{{ short_url.original_url }}" target="_blank">{{ short_url.original_url }}</a></td>
+                    </tr>
+                    <tr>
+                        <th>Redirects:</th>
+                        <td><span class="badge bg-primary fs-5">{{ short_url.clicks }}</span></td>
+                    </tr>
+                    <tr>
+                        <th>Created at:</th>
+                        <td>{{ short_url.created_at|date:"d.m.Y H:i:s" }}</td>
+                    </tr>
+                    <tr>
+                        <th>Last update:</th>
+                        <td>{{ short_url.updated_at|date:"d.m.Y H:i:s" }}</td>
+                    </tr>
+                </table>
+                
+                <div class="text-center mt-4">
+                    <a href="{% url 'index' %}" class="btn btn-primary">New shortcut</a>
+                    <a href="{% url 'all_links' %}" class="btn btn-secondary">All links</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

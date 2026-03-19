@@ -1,19 +1,68 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Link Shortcut</title>
-    {% load static %}
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-</head>
-<body>
-    <div class="main-block">
-        <h2 class="main-block-title">Hello, try this</h2>
-        <form action="POST">
-            <input class="main-block-input" placeholder="Put your link" type="text">
-        </form>
-        <button type="submit"></button>
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0">Shortcut link</h4>
+            </div>
+            <div class="card-body">
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        {{ form.original_url }}
+                    </div>
+                    <button type="submit" class="btn btn-primary">Shortcut</button>
+                </form>
+
+                {% if short_url %}
+                    <div class="mt-4 alert alert-success">
+                        <p><strong>Your link:</strong></p>
+                        <div class="input-group">
+                            <input type="text" class="form-control" value="{{ short_url }}" id="shortUrl" readonly>
+                            <button class="btn btn-outline-primary" type="button" onclick="copyToClipboard()">Copy</button>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
+        {% if recent_links %}
+            <div class="card mt-4">
+                <div class="card-header">
+                    <h5 class="mb-0">Last generated links</h5>
+                </div>
+                <div class="card-body">
+                    <div class="list-group">
+                        {% for link in recent_links %}
+                            <div class="list-group-item">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <a href="{% url 'redirect' link.short_code %}" target="_blank">
+                                            {{ request.get_host }}/{{ link.short_code }}
+                                        </a>
+                                        <br>
+                                        <small class="text-muted">{{ link.original_url|truncatechars:50 }}</small>
+                                    </div>
+                                    <span class="badge bg-primary rounded-pill">Redirects: {{ link.clicks }}</span>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        {% endif %}
     </div>
-</body>
-</html>
+</div>
+
+<script>
+function copyToClipboard() {
+    var copyText = document.getElementById("shortUrl");
+    copyText.select();
+    copyText.setSelectionRange(0, 99999);
+    document.execCommand("copy");
+    alert("Copied!");
+}
+</script>
+{% endblock %}

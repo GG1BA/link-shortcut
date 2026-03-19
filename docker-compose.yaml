@@ -27,7 +27,8 @@ services:
       dockerfile: Dockerfile
     container_name: link-shortcut-django
     command: >
-      sh -c "python manage.py migrate &&
+      sh -c "python manage.py makemigrations main &&
+             python manage.py migrate main &&
              python manage.py runserver ${RUNSERVER_URL}"
     ports:
       - "${APP_PORT}:${APP_PORT}"
