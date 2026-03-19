@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import ShortURL
+from main.models import ShortURL 
 
 class ShortURLSerializer(serializers.ModelSerializer):
     short_url = serializers.SerializerMethodField(read_only=True)
