@@ -15,7 +15,7 @@ class Migration(migrations.Migration):
             name='ShortURL',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('original_url', models.URLField(max_length=500, verbose_name='Original link')),
+                ('original_url', models.URLField(max_length=2048, verbose_name='Original link')),
                 ('short_code', models.CharField(db_index=True, max_length=10, unique=True, verbose_name='Shortcut')),
                 ('clicks', models.IntegerField(default=0, verbose_name='Redirects')),
                 ('created_at', models.DateTimeField(auto_now_add=True, verbose_name='Creation date')),

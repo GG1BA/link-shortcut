@@ -21,7 +21,7 @@ def index(request):
             except:
                 short_url_obj.original_url = short_url.original_url[:ShortURL._meta.get_field('original_url').max_length]
                 short_url_obj.save()
-                messages.success(request, 'Link is too long!')
+                messages.add_message(request, 'Link is too long!')
     else:
         form = ShortURLForm()
     

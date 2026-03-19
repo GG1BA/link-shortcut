@@ -16,6 +16,8 @@ class ShortURLSerializer(serializers.ModelSerializer):
         return f"/{obj.short_code}"
 
 class ShortenURLSerializer(serializers.ModelSerializer):
+    original_url = serializers.CharField()
+    
     class Meta:
         model = ShortURL
         fields = ['original_url']
@@ -27,6 +29,14 @@ class ShortenURLSerializer(serializers.ModelSerializer):
             short_code=short_code
         )
         return short_url
+    
+    def validate_original_url(self, value):
+        if not value.startswith(('http://', 'https://')):
+            value = 'https://' + value
+        if len(value) > 2048:
+            raise serializers.ValidationError("URL exceeds maximum length of 2048 characters")
+        
+        return value
 
 class URLStatsSerializer(serializers.ModelSerializer):
     short_url = serializers.SerializerMethodField()
