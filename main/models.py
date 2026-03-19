@@ -3,7 +3,7 @@ import random
 import string
 
 class ShortURL(models.Model):
-    original_url = models.URLField(max_length=500, verbose_name="Original link")
+    original_url = models.URLField(max_length=2048, verbose_name="Original link")
     short_code = models.CharField(max_length=10, unique=True, db_index=True, verbose_name="Shortcut")
     clicks = models.IntegerField(default=0, verbose_name="Redirects")
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Creation date")

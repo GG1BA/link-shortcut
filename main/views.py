@@ -10,13 +10,18 @@ def index(request):
     if request.method == 'POST':
         form = ShortURLForm(request.POST)
         if form.is_valid():
-            short_url_obj = form.save(commit=False)
-            short_url_obj.short_code = ShortURL.generate_unique_short_code()
-            short_url_obj.save()
-            
-            short_url = request.build_absolute_uri(reverse('redirect', args=[short_url_obj.short_code]))
-            
-            messages.success(request, 'Shortcut generated!')
+            try:
+                short_url_obj = form.save(commit=False)
+                short_url_obj.short_code = ShortURL.generate_unique_short_code()
+                short_url_obj.save()
+                
+                short_url = request.build_absolute_uri(reverse('redirect', args=[short_url_obj.short_code]))
+                
+                messages.success(request, 'Shortcut generated!')
+            except:
+                short_url_obj.original_url = short_url.original_url[:ShortURL._meta.get_field('original_url').max_length]
+                short_url_obj.save()
+                messages.success(request, 'Link is too long!')
     else:
         form = ShortURLForm()
     
