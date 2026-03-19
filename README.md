@@ -14,7 +14,7 @@
 
 ```bash
 # Клонировать репозиторий
-git clone <your-repo-url>
+git clone https://github.com/GG1BA/link-shortcut.git
 cd link-shortcut-django
 
 # Установить зависимости
@@ -97,7 +97,6 @@ GET /api/stats/{short_code}
 - **Главная страница**: http://localhost:8000
 - **Все ссылки**: http://localhost:8000/all
 - **Статистика**: http://localhost:8000/stats/{short_code}
-- **Админка**: http://localhost:8000/admin
 
 ## 🧪 Тестирование
 
@@ -170,48 +169,14 @@ ALLOWED_HOSTS=localhost,127.0.0.1
 - SQLite (для разработки)
 - PostgreSQL (для продакшена)
 
-## 📁 Структура проекта
 
-```
-link-shortcut-django/
-├── api/                    # API приложение
-│   ├── serializers.py      # Сериализаторы
-│   ├── urls.py             # URL маршруты API
-│   ├── views.py            # API представления
-│   └── tests/               # Тесты API
-│       ├── test_base.py
-│       ├── test_edge.py
-│       ├── test_redirect.py
-│       ├── test_shortcut_endpoint.py
-│       └── test_stats.py
-├── main/                   # Основное приложение
-│   ├── models.py           # Модель ShortURL
-│   ├── views.py            # Веб-представления
-│   ├── urls.py             # URL маршруты сайта
-│   └── templates/          # HTML шаблоны
-├── link_shortcut/          # Настройки проекта
-│   ├── settings.py
-│   └── urls.py
-└── manage.py
-```
 
 ## ✅ Текущий статус тестов
 
-Все 27 тестов проходят успешно:
+28 / 30 тестов проходят успешно:
 - ✅ Создание коротких ссылок
 - ✅ Редиректы и подсчет переходов
 - ✅ Статистика по ссылкам
-- ✅ Граничные случаи (пустые URL, спецсимволы и т.д.)
-- ✅ Обработка ошибок и невалидных данных
 
-## 🤝 Вклад в проект
-
-1. Форкните репозиторий
-2. Создайте ветку для фичи (`git checkout -b feature/amazing-feature`)
-3. Закоммитьте изменения (`git commit -m 'Add amazing feature'`)
-4. Запушьте ветку (`git push origin feature/amazing-feature`)
-5. Откройте Pull Request
-
-## 📄 Лицензия
-
-MIT License
+- ❌ Имеется проблема с обработкой очень длинных ссылок
+- ❌ Api не принимает ссылку без указания протокола
